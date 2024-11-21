@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<!--
+    $Revision: 1.69 $
+    $Date: 2003/12/13 12:39:08 $
+    $Author: billhorsman $
+
+    http://proxool.sourceforge.net
+
+-->
+<project name="Proxool" default="build-jar" basedir=".">
+    <!-- Where to build everything. You might want to override
+    this so that it isn't within your cvs tree. -->
+    <property name="build-dir" value="build"/>
+
+    <!-- Whether we include debug information in JAR file -->
+    <property name="debug" value="true"/>
+
+    <!-- Currect release, e.g. 0.6 -->
+    <property name="release" value="0.8.3"/>
+
+    <!-- Classpath -->
+    <path id="source" path="${build-dir}/classes">
+        <fileset dir="lib">
+            <include name="**/*.jar"/>
+	    <include name="**/*.zip"/>
+        </fileset>
+    </path>
+    <path id="binary">
+        <fileset dir="lib">
+            <include name="**/*.jar"/>
+	    <include name="**/*.zip"/>
+        </fileset>
+        <fileset dir="jar">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <!--
+        Build necessary directories
+       -->
+    <target
+        name="init"
+        >
+        <tstamp>
+            <format property="TODAY_FULL" pattern="dd-MMM-yyyy HH:mm zzz"/>
+        </tstamp>
+        <mkdir dir="${build-dir}/src/java" description="make source directory"/>
+        <mkdir dir="${build-dir}/etc"/>
+        <mkdir dir="${build-dir}/classes"/>
+   </target>
+
+    <target
+        name="clean"
+        description="Cleans build directory"
+        >
+        <delete dir="${build-dir}"/>
+    </target>
+
+    <target
+        name="build-src"
+        description="Gathers the source code together ready for compiling"
+        depends="clean,init"
+        >
+        <antcall target="build-src-core"/>
+        <antcall target="version-stamp"/>
+    </target>
+
+    <target
+        name="version-stamp"
+        description="Adds the version and build date to the Version class"
+        if="version"
+    >
+        <replace
+            file="${build-dir}/src/java/org/logicalcobwebs/proxool/Version.java"
+            token="VERSION = null"
+            value='VERSION = "${release}"'
+            />
+
+        <replace
+            file="${build-dir}/src/java/org/logicalcobwebs/proxool/Version.java"
+            token="BUILD_DATE = null"
+            value='BUILD_DATE = "${TODAY}"'
+            />
+
+    </target>
+
+    <target
+        name="compile"
+        description="Compiles the code"
+        depends="init,build-src"
+        >
+        <javac srcdir="${build-dir}/src/java" destdir="${build-dir}/classes" debug="${debug}" source="1.8" target="1.8">
+            <classpath refid="source"/>
+        </javac>
+        <!-- Copy dtd's and properties into the compiled classes directory. -->
+        <copy todir="${build-dir}/classes">
+            <fileset dir="src/java" includes="**/*.dtd"/>
+            <fileset dir="src/java" includes="**/*.properties"/>
+        </copy>
+    </target>
+
+    <target
+        name="build-jar"
+        description="Compiles and builds the JAR file"
+        depends="init,build-src,compile"
+        >
+        <manifest file="${build-dir}/etc/MANIFEST.MF">
+            <attribute name="Proxool-Version" value="${release}"/>
+            <attribute name="Date" value="${TODAY}"/>
+        </manifest>
+        <jar
+            jarfile="${build-dir}/proxool-${release}.jar"
+            basedir="${build-dir}/classes"
+            manifest="${build-dir}/etc/MANIFEST.MF"
+            />
+    </target>
+
+    <target
+        name="build-src-core"
+        depends="init"
+        description="Build the core source (all that is required to run Proxool)"
+        >
+        <echo level="info" message="Using ${java.vm.vendor} ${java.vm.name} ${java.vm.version} in ${java.home}"/>
+        <copy todir="${build-dir}/src/java" preservelastmodified="yes">
+            <fileset dir="src/java" includes="**/*.java"/>
+        </copy>
+    </target>
+
+</project>
