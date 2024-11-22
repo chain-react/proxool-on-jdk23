@@ -16,10 +16,10 @@ You can observe MySQL connection pool by running the command "netstat -an | grep
 
 ```java
 public class Sample {
-	//name of connection pool,  u can use any word
-	static String alias = "pool_name";
-	
-	//below is the MySQL server configuration.
+    //name of connection pool,  u can use any word
+    static String alias = "pool_name";
+
+    //below is the MySQL server configuration.
     static String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
     static String host = "192.168.0.5";
     static int port = 3306;
@@ -39,16 +39,16 @@ public class Sample {
     
     //get a Connection from pool
     private static Connection getConnectFromPool() throws SQLException {
-    	// url format = proxool_url_wrapper" + real_JDBC_url
+    	// url format = proxool_url_wrapper + real_JDBC_url
         String dbUrl = 
         		//this is proxool_url_wrapper
         		"proxool." + alias + ":" + MYSQL_DRIVER + ":"
         		// below is real_JDBC_url
         		+ "jdbc:mysql://" + host + ":" + port + "/" + db
         		+ "?user=" + user + "&password=" + password
-                + "&useUnicode=true"
+        		+ "&useUnicode=true"
         		+ "&characterEncoding=" + characterEncoding
-                + "&useOldAliasMetadataBehavior=true";
+        		+ "&useOldAliasMetadataBehavior=true";
         
         Properties info = new Properties();
         //below will be passed to proxool
@@ -64,18 +64,18 @@ public class Sample {
         return c;
     }
     
-	public static void main(String[] args) throws Exception{
-		Connection c = getConnectFromPool();
-		Thread.sleep(15*1000);
-		// netstat -an | grep 3306
-		// At this time, you will see 5 ESTABLISHED TCP.
-		
-		c.close();
-		Thread.sleep(15*1000);
-		// netstat -an | grep 3306
-		// At this time, you are still seeing the original 5 TCP connections.
-		// So, method close() just return the connection to the pool without really closing.
-	}
+    public static void main(String[] args) throws Exception{
+        Connection c = getConnectFromPool();
+        Thread.sleep(15*1000);
+        // netstat -an | grep 3306
+        // At this time, you will see 5 ESTABLISHED TCP.
+
+        c.close();
+        Thread.sleep(15*1000);
+        // netstat -an | grep 3306
+        // At this time, you are still seeing the original 5 TCP connections.
+        // So, method close() just return the connection to the pool without really closing.
+    }
 }
 ```
 
