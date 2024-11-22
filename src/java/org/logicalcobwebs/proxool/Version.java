@@ -39,7 +39,7 @@ public class Version {
 
     private static final String BUILD_DATE = null;
 
-    private static final String CVS = "0.8.3+";
+    private static final String CVS = "1.0.0+";
 
     public static String getVersion() {
         StringBuffer version = new StringBuffer();
