@@ -1,20 +1,21 @@
-## proxool-on-jdk23
+/*
+ * This software is released under a licence similar to the Apache Software Licence.
+ * See org.logicalcobwebs.proxool.package.html for details.
+ * The latest version is available at http://proxool.sourceforge.net
+ */
+package org.logicalcobwebs.proxool.examples;
 
-A Java SQL Driver that provides a connection pool wrapper
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Properties;
 
-## Features
-
-- It can run on any version between JDK 1.4 and JDK 23.0
-- It does not depend on any third-party JAR libraries
-- The package name, class name, and interface name are exactly the same as the old `proxool` library; so, all you need to do is replace the JAR file
-
-## Usage
-
-Below code is a simple example of connecting to a MySQL database.
-
-You can observe MySQL connection pool by running the command "netstat -an | grep 3306".
-
-```java
+/**
+ * The simplest example of all. Just gets a Connection.
+ *
+ * @author chain-react
+ */
 public class Sample {
 	//name of connection pool,  u can use any word
 	static String alias = "pool_name";
@@ -37,7 +38,7 @@ public class Sample {
         }
     }
     
-    //get a Connection from pool
+    /* get a Connection from pool */
     private static Connection getConnectFromPool() throws SQLException {
     	// url format = proxool_url_wrapper" + real_JDBC_url
         String dbUrl = 
@@ -74,11 +75,6 @@ public class Sample {
 		Thread.sleep(15*1000);
 		// netstat -an | grep 3306
 		// At this time, you are still seeing the original 5 TCP connections.
-		// So, method close() just return the connection to the pool without really closing.
+		// So, close() just returns the connection to the pool without really closing.
 	}
 }
-```
-
-## Note
-
-The original author of the Proxool is Bill Horsman, see the [Author Site](https://github.com/proxool/proxool)
