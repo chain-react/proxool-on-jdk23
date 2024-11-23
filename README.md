@@ -106,7 +106,7 @@ public class Sample {
 }
 ```
 
-## Note
+## Note | 备注
 
 The original author of the Proxool is Bill Horsman, see the [Author Site](https://github.com/proxool/proxool)
 
