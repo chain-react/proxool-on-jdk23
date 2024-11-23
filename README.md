@@ -1,18 +1,27 @@
-## proxool-on-jdk23
+## Introduction | 简介
 
 A Java SQL Driver that provides a connection pool wrapper
 
-## Features
+一个JDBC数据库连接池的封装
+
+## Features | 功能特性
 
 - It can run on any version between JDK 1.4 and JDK 23.0
 - It does not depend on any third-party JAR libraries
 - The package name, class name, and interface name are exactly the same as the old `proxool` library; so, all you need to do is replace the JAR file
+- 可以运行在 JDK 1.4 到 JDK 23.0 的所有Java版本上
+- 不依赖于任何第三方JAR库，仅仅依赖JDK本身
+- 包名，类名，接口名和老的`proxool`库一模一样，所以，你要做的仅仅是替换老的JAR文件
 
-## Usage
+## Usage | 用法
 
 Below code is a simple example of connecting to a MySQL database.
 
 You can observe MySQL connection pool by running the command "netstat -an | grep 3306".
+
+下面是实现一个MySQL数据库连接池的范例
+
+你可以通过"netstat -an | grep 3306"命令，观察MySQL的连接情况
 
 ```java
 import java.sql.Connection;
@@ -100,3 +109,5 @@ public class Sample {
 ## Note
 
 The original author of the Proxool is Bill Horsman, see the [Author Site](https://github.com/proxool/proxool)
+
+Proxool的原作者是Bill Horsman，点击此处可以看[原作者网站](https://github.com/proxool/proxool)
